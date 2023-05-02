@@ -1,31 +1,39 @@
 package gp2.floorstack;
 
-class FloorStackConstruction {
-	private int[] floors;
-	private int top;
+import java.util.*;
 
-	public FloorStackConstruction(int n) {
-		floors = new int[n];
-		top = -1;
-	}
+public class FloorStackConstruction {
 
-	public void update(int floorSize) {
-		while (top >= 0 && floorSize < floors[top]) {
-			// Pop larger floors from the stack until we find one that is smaller
-			top--;
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("enter the total no of floors in the building");
+		int n = sc.nextInt();
+		int[] floorSizes = new int[n];
+		for (int i = 0; i < n; i++) {
+			System.out.println("enter the floor size given on day " + (i + 1) + " : ");
+			floorSizes[i] = sc.nextInt();
 		}
-		floors[++top] = floorSize;
-	}
+		Stack<Integer> stack = new Stack<>();
+		int currFloorSize = n;
+		for (int i = 0; i < n; i++) {
+			System.out.println("Day " + (i + 1) + ": ");
+			while (!stack.empty() && stack.peek() == currFloorSize) {
 
-	public void print(int day) {
-		if (top < 0) {
-			// If there are no floors that can be assembled, leave the line empty
-			System.out.println();
-			return;
+				System.out.print(stack.pop() + " ");
+				currFloorSize--;
+			}
+			if (floorSizes[i] == currFloorSize) {
+				System.out.print(floorSizes[i] + " ");
+				currFloorSize--;
+			} else {
+				System.out.println();
+				stack.push(floorSizes[i]);
+			}
+
 		}
-		for (int i = top; i >= 0; i--) {
-			System.out.print(floors[i] + " ");
+		while (!stack.empty()) {
+			System.out.print(stack.pop() + " ");
 		}
-		System.out.println();
+		sc.close();
 	}
 }
